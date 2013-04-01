@@ -1,11 +1,5 @@
 ---
-##Configure /etc/matterhorn/matterhorn.conf for worker nodes
-- hosts: all
-  user: vagrant
-  sudo: yes
-  tasks:
-
-  - name: "configure node type"
+  - name: "Render /etc/matterhorn/matterhorn.conf according to group_vars"
     template: >
              src=/home/vagrant/matterhorn-ansible/roles/common/templates/matterhorn_conf.j2
              dest=/tmp/matterhorn.conf

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  user: vagrant
+  sudo: yes
+  tasks:
+        - include: ../matterhorn-ansible/roles/common/tasks/matterhorn_conf.yml
