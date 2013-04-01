@@ -1,7 +1,7 @@
 matterhorn-ansible
 ==================
 
-Ansible playbook and related files for Configuration Management on RHEL/CentOS of Entwine-Matterhorn (RPM with configuration file based)
+Ansible playbook and related files for Configuration Management on RHEL/CentOS of Entwine-Matterhorn (RPM with file based configuration for node types)
 
 Please refer to the following link (1) to learn about Entwine's Matterhorn RPM.
 
