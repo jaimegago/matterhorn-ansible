@@ -1,3 +1,3 @@
 ---
 ##Node type set in /etc/matterhorn/matterhorn.conf
-MH_NODE_TYPE: '"worker"'
+MATTERHORN_NODE_TYPE: '"worker"'
