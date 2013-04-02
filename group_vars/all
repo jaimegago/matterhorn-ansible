@@ -1,5 +1,6 @@
 ---
-
+### /etc/matterhorn/matterhorn.conf vars refer to associate template file in common/templates/matterhorn_conf.j2
+#for comments about each value
 PROFILING: '"OFF"'
 
 PROFILING_TOOL: '"newrelic"'

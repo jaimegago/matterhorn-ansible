@@ -1,2 +1,4 @@
 ---
-MATTERHORN_NODE_TYPE: '"admin"'
+MATTERHORN_NODE_TYPE: admin
+
+properties_load_file: admin.properties

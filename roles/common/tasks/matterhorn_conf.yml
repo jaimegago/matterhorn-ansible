@@ -3,3 +3,11 @@
     template: >
              src=/home/vagrant/matterhorn-ansible/roles/common/templates/matterhorn_conf.j2
              dest=/tmp/matterhorn.conf
+
+  - name: "Copy the required $NODE_TYPE.properties in /etc/matterhorn/profiles/"
+    copy: >
+             src=$item
+             dest=/tmp/
+
+    first_available_file:
+        - /home/vagrant/matterhorn-ansible/roles/${MATTERHORN_NODE_TYPE}/files/${MATTERHORN_NODE_TYPE}.properties
