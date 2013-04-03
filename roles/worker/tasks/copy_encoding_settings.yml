@@ -1,0 +1,8 @@
+---
+
+- name: Copy encoding settings to workers in /etc/matterhorn
+  copy: >
+      src=$item
+      dest=/tmp
+  with_fileglob:
+      - /home/vagrant/matterhorn-ansible/roles/worker/files/encoding/*
