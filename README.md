@@ -16,3 +16,5 @@ TODOS:
 -Handlers
 
 -Test in pull mode (in particular rsync/copy operations)
+
+-User and sudo stuff
