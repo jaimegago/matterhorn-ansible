@@ -1,6 +1,6 @@
 ---
 
-- name: Copy encoding settings to workers in /etc/matterhorn
+- name: Copy all (iteration by regex wildcard) files in roles/worker/files/encoding to workers in /etc/matterhorn/encoding
   copy: >
       src=$item
       dest=/tmp
