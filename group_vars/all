@@ -1,11 +1,11 @@
 ---
-### /etc/matterhorn/matterhorn.conf vars refer to associate template file in common/templates/matterhorn_conf.j2
-#for comments about each value
+### /etc/matterhorn/matterhorn_conf vars refer to associate template file in 
+#roles/common/templates/matterhorn_conf_j2 for comments about each value
 PROFILING: '"OFF"'
 
 PROFILING_TOOL: '"newrelic"'
 
-NEW_RELIC_OPTS: '"-javaagent:/opt/newrelic/newrelic.jar"'
+NEW_RELIC_OPTS: '"-javaagent:/opt/newrelic/newrelic_jar"'
 
 MATTERHORN_USER: '"mh"'
 
@@ -23,14 +23,28 @@ MATTERHORN_CACHE_DIR: '"/var/cache/matterhorn"'
 
 MATTERHORN_LOG_DIR: '"/var/log/matterhorn"'
 
-MATTERHORN_OPTS: '"-Dmatterhorn.home=/opt/matterhorn"'
+MATTERHORN_OPTS: '"-Dmatterhorn_home=/opt/matterhorn"'
 
 JVM_MEMORY_OPTS: '"-Xmx2048m -XX:MaxPermSize=256m"'
 
 JVM_DEBUG_OPTS: '"-Xdebug -ea:ch -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"'
 
-JVM_AWT_OPTS: '"-Djava.awt.headless=true -Dawt.toolkit=sun.awt.HeadlessToolkit"'
+JVM_AWT_OPTS: '"-Djava_awt.headless=true -Dawt.toolkit=sun.awt.HeadlessToolkit"'
 
-JVM_ENCODING_OPTS: '"-Dfile.encoding=utf-8"'
+JVM_ENCODING_OPTS: '"-Dfile_encoding=utf-8"'
 
-JVM_MONITORING_OPTS: '"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"'
+JVM_MONITORING_OPTS: '"-Dcom_sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"'
+
+#### values for keys in /etc/matterhorn/config_properties associated template is 
+#roles/common/templates/config_properties_j2
+
+com_entwine_configuration_review_done: 'true'
+
+org_osgi_service_http_port: '8080'
+
+org_osgi_service_http_secure_enabled: 'false'
+
+org_osgi_service_http_port_secure: '8443'
+
+org_opencastproject_server_url: http://${ansible_fqdn}
+
