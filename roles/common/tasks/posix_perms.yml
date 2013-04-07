@@ -1,0 +1,11 @@
+---
+- name: Making sure MH system user owns the directories (recursive) specified in the JVM options
+  file: >
+        state=directory
+        recurse=yes
+        owner=${MATTERHORN_USER}
+        path=$item
+  with_items:
+        - ${MATTERHORN_CONF_DIR}
+        - ${MATTERHORN_CACHE_DIR}
+               

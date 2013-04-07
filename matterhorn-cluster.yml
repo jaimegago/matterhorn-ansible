@@ -1,4 +1,5 @@
 ---
+#- include: /home/vagrant/matterhorn-ansible/playbooks/local.yml
 - include: /home/vagrant/matterhorn-ansible/playbooks/matterhorn-common.yml
 - include: /home/vagrant/matterhorn-ansible/playbooks/matterhorn-worker.yml
 #- include: ../matterhorn-ansible/playbooks/matterhorn-ingest.yml

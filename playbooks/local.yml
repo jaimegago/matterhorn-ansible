@@ -1,0 +1,8 @@
+---
+#A playbook to run on the host kicking the ansible-playbook command
+- hosts: local 
+  user: vagrant
+  sudo: yes
+  tasks:
+       - name: Make sure rsync is installed
+         yum: name=rsync state=installed
