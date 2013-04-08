@@ -8,4 +8,6 @@
   with_items:
         - ${MATTERHORN_CONF_DIR}
         - ${MATTERHORN_CACHE_DIR}
+        - ${MATTERHORN_TEMP_DIR}
+        - ${MATTERHORN_LOG_DIR}
                
