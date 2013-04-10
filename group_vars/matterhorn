@@ -1,6 +1,21 @@
 ---
-###VARIABLES COMMON TO ALL MATTERHORN HOSTS
+##############################################
+###VARIABLES COMMON TO ALL MATTERHORN HOSTS###
+##############################################
 #
+#Engage and Admin node URLs to be used accross the cluster
+#
+#This can be computed from the host file/and or using facts
+#It's easy enough to hardcoded them here though
+#and one could scale this with adding numbers to the vars names
+#when looking to achieve some level of redundancy/load balancing
+###
+
+MH_ADMIN_NODE_URL: http://my.admin-node.url
+MH_ENGAGE_NODE_URL: http://my.engage-node.url
+
+
+
 ### /etc/matterhorn/matterhorn_conf vars refer to associate template file in 
 #roles/common/templates/matterhorn_conf_j2 for comments about each value
 PROFILING: OFF
@@ -49,4 +64,10 @@ org_osgi_service_http_secure_enabled: 'false'
 org_osgi_service_http_port_secure: '8443'
 
 org_opencastproject_server_url: http://${ansible_fqdn}
+
+org_opencastproject_serviceregistry_url: '${org.opencastproject.server.url}/services'
+
+org_opencastproject_jobs_url: '${org.opencastproject.server.url}'
+
+org_opencastproject_storage_dir: /var/matterhorn/local/${ansible_fqdn}
 

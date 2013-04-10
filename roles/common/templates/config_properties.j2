@@ -26,26 +26,30 @@ org.opencastproject.server.url={{ org_opencastproject_server_url }}
 # registry database such as capture agens running in protected environments. This is typically true for capture agents
 # and should be set to the url of a server running the actual implementation of the service registry and the path to 
 # the service registry(admin, worker, etc. See the build profiles in pom.xml for a complete list).
-org.opencastproject.serviceregistry.url=${org.opencastproject.server.url}/services
+org.opencastproject.serviceregistry.url={{ org_opencastproject_serviceregistry_url }}
 
 # The base URL of the server hosting the administrative tools.  If the admin tools are deployed on this server,
 # this should point to this server's public URL.
-org.opencastproject.admin.ui.url=${org.opencastproject.server.url}/VERIFYME
+#Here is one way of setting this in ansible by looking at the group "admin" in the host file, work "as is" only for a single admin node specified in admin group 
+#org.opencastproject.admin.ui.url={% for host in groups['admin'] %} {{ host }} {% endfor %}
+#The easy way is to specifiy the Matterhorn admin node URL in the group vars common to all matterhorn nodes and use it here
+
+org.opencastproject.admin.ui.url= {{ MH_ADMIN_NODE_URL }}
 
 # The base URL of the server hosting the engage tools.  If the engage tools are deployed on this server, this
 # should point to this server's public URL.
-org.opencastproject.engage.ui.url=${org.opencastproject.server.url}/VERIFYME
+org.opencastproject.engage.ui.url= {{ MH_ENGAGE_NODE_URL }}
 
 # The base URL to use for publishing job locations. If left commented out, the local server URL will be used.  Set this
 # if you intend to support swapping servers with different IPs or host names.
-org.opencastproject.jobs.url=${org.opencastproject.server.url}
+org.opencastproject.jobs.url={{ org_opencastproject_jobs_url }}
 
 # The url for the service registry, which will allow distributed installations to find remote service instances.
 #org.opencastproject.serviceregistry.url=${org.opencastproject.server.url}/serviceregistry
 
 # The directory where the system will store its processed files (including temporary files).  This directory should
 # be persistent between reboots (i.e., not /tmp)
-org.opencastproject.storage.dir=/var/matterhorn/local
+org.opencastproject.storage.dir={{ org_opencastproject_storage_dir }}
 
 # The username and password to present to other Matterhorn servers when calling their REST endpoints.
 # The remote server must contain matching values in its config.properties.
