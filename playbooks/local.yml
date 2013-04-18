@@ -6,3 +6,4 @@
   tasks:
        - name: Make sure rsync is installed
          yum: name=rsync state=installed
+

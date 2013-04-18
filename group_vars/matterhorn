@@ -11,7 +11,7 @@
 #when looking to achieve some level of redundancy/load balancing
 ###
 
-MH_ADMIN_NODE_URL: http://my.admin-node.url
+MH_ADMIN_NODE_URL: http://something
 MH_ENGAGE_NODE_URL: http://my.engage-node.url
 
 

@@ -1,0 +1,12 @@
+---
+#testing mysql
+- name: installing mysql
+  yum: >
+       state=latest
+       name=mysql-server
+
+- name: starting if stopped
+  service: >
+          name=mysqld
+          state=enabled
+          state=started
