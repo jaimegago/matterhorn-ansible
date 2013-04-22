@@ -1,5 +1,0 @@
----
-- name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
-  template: >
-          src=/home/vagrant/matterhorn-ansible/roles/common/templates/config_properties.j2
-          dest=/tmp/config.properties

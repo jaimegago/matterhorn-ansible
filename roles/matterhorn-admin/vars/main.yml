@@ -1,4 +1,4 @@
 ---
 ##Node type set in /etc/matterhorn/matterhorn.conf
-MATTERHORN_NODE_TYPE: worker
-##
+MATTERHORN_NODE_TYPE: admin
+###

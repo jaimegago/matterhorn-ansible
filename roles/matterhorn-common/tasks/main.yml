@@ -1,0 +1,38 @@
+---
+- name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
+  template: >
+          src=config_properties.j2
+          dest=/tmp/config.properties
+
+
+
+- name: "Render /etc/matterhorn/matterhorn.conf according to group_vars"
+  template: >
+             src=matterhorn_conf.j2
+             dest=/tmp/matterhorn.conf
+
+
+- name: "Make sure Matterhorn system user exist"
+  user: >
+        name=${MATTERHORN_USER}
+        state=present
+        home=${MATTERHORN_HOME}
+        system=yes
+
+- name: "Make sure MH system user owns the directories (recursive) specified in the JVM options"
+  file: >
+        state=directory
+        recurse=yes
+        owner=${MATTERHORN_USER}
+        path=$item
+  with_items:
+        - ${MATTERHORN_CONF_DIR}
+        - ${MATTERHORN_CACHE_DIR}
+        - ${MATTERHORN_TEMP_DIR}
+        - ${MATTERHORN_LOG_DIR}
+
+
+- name: "Copy the required $NODE_TYPE.properties in /etc/matterhorn/profiles/"
+  copy: >
+             src=roles/matterhorn-${MATTERHORN_NODE_TYPE}/files/${MATTERHORN_NODE_TYPE}.properties
+             dest=/tmp/

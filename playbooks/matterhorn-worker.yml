@@ -1,6 +1,0 @@
----
-- hosts: workers
-  user: vagrant
-  sudo: yes
-  tasks:
-        - include: /home/vagrant/matterhorn-ansible/roles/worker/tasks/copy_encoding_settings.yml

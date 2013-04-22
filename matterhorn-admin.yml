@@ -1,0 +1,7 @@
+---
+- hosts: admin
+  user: vagrant
+  sudo: yes
+  roles:
+       - matterhorn-common
+       - matterhorn-admin
