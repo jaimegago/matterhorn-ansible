@@ -1,9 +1,0 @@
-- hosts: matterhorn
-  user: vagrant
-  sudo: yes
-  tasks:
-       - include: /home/vagrant/matterhorn-ansible/roles/common/tasks/matterhorn_conf.yml
-       - include: /home/vagrant/matterhorn-ansible/roles/common/tasks/config_properties.yml
-       - include: /home/vagrant/matterhorn-ansible/roles/common/tasks/profiles_cp.yml
-       - include: /home/vagrant/matterhorn-ansible/roles/common/tasks/matterhorn_user.yml
-       - include: /home/vagrant/matterhorn-ansible/roles/common/tasks/posix_perms.yml
