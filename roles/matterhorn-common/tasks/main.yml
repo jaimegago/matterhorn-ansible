@@ -2,14 +2,14 @@
 - name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
   template: >
           src=config_properties.j2
-          dest=/tmp/config.properties
+          dest=/etc/matterhorn/config.properties
 
 
 
-- name: "Render /etc/matterhorn/matterhorn.conf according to group_vars"
+- name: "Render /etc/matterhorn/matterhorn.conf according to common role vars"
   template: >
              src=matterhorn_conf.j2
-             dest=/tmp/matterhorn.conf
+             dest=/etc/matterhorn/matterhorn.conf
 
 
 - name: "Make sure Matterhorn system user exist"
@@ -35,4 +35,4 @@
 - name: "Copy the required $NODE_TYPE.properties in /etc/matterhorn/profiles/"
   copy: >
              src=roles/matterhorn-${MATTERHORN_NODE_TYPE}/files/${MATTERHORN_NODE_TYPE}.properties
-             dest=/tmp/
+             dest=/etc/matterhorn/profiles/

@@ -8,11 +8,15 @@
 #
 #  tags:
 #       - encod_cp
+#
+#
 - name: Make sure rsync is installed on the target hosts       
   yum: >
         name=rsync
         state=latest
-
+  tags:
+      -encod_cp
+##################
 - name : Synchronize encoding properties directories on workers with the files in roles/worker/files/encoding/ via rsync
 
   local_action: >
@@ -22,7 +26,9 @@
               --delete 
               -az
               roles/matterhorn-worker/files/encoding/ 
-              $inventory_hostname:/tmp/encoding
+              $inventory_hostname:/etc/matterhorn/encoding
+
+  sudo: False
 
   tags:
        - encod_cp

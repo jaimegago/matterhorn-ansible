@@ -3,8 +3,10 @@
   yum: >
         name=rsync
         state=latest
+  tags:
+      - workflow_cp
 
-- name : Synchronize encoding properties directories on workers with the files in roles/worker/files/encoding/ via rsync
+- name : Synchronize workflow directory on workers with the files in roles/admin/files/workflows/ via rsync
 
   local_action: >
               command
@@ -13,7 +15,7 @@
               --delete 
               -az
               roles/matterhorn-admin/files/workflows/ 
-              $inventory_hostname:/tmp/workflows
+              $inventory_hostname:/etc/matterhorn/workflows
   sudo: False
 
   tags:
