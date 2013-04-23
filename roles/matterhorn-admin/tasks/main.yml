@@ -1,0 +1,20 @@
+---
+- name: Make sure rsync is installed       
+  yum: >
+        name=rsync
+        state=latest
+
+- name : Synchronize encoding properties directories on workers with the files in roles/worker/files/encoding/ via rsync
+
+  local_action: >
+              command
+              rsync
+              -e 'ssh -o stricthostkeychecking=no -o userknownhostsfile=/dev/null -o batchmode=yes -o passwordauthentication=no'
+              --delete 
+              -az
+              roles/matterhorn-admin/files/workflows/ 
+              $inventory_hostname:/tmp/workflows
+  sudo: False
+
+  tags:
+       - workflow_cp
