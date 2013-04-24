@@ -1,5 +1,5 @@
 ---
-- hosts: admin
+- hosts: presentation
   user: vagrant
   sudo: yes
   roles:
