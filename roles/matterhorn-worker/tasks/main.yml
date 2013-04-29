@@ -1,34 +1,38 @@
 ---
-##- name: Copy encoding properties files (iteration by regex wildcard) roles/worker/files/encoding/*.properties to workers in /etc/matterhorn/encoding
-#  copy: >
-#      src=$item
-#      dest=/tmp
-#  with_fileglob:
-#      - /home/vagrant/matterhorn-ansible/roles/worker/files/encoding/*.properties
+#- name: Make sure rsync is installed on the target hosts       
+#  yum: >
+#        name=rsync
+#        state=latest
+#  tags:
+#      -encod_cp
+###################
+#- name : Synchronize encoding properties directories on workers with the files in roles/worker/files/encoding/ via rsync
+#
+#  local_action: >
+#              command
+#              rsync
+#              -e 'ssh -o stricthostkeychecking=no -o userknownhostsfile=/dev/null -o batchmode=yes -o passwordauthentication=no'
+#              --delete 
+#              -az
+#              roles/matterhorn-worker/files/encoding/ 
+#              $inventory_hostname:/etc/matterhorn/encoding
+#
+#  sudo: False
 #
 #  tags:
 #       - encod_cp
-#
-#
-- name: Make sure rsync is installed on the target hosts       
-  yum: >
-        name=rsync
-        state=latest
-  tags:
-      -encod_cp
-##################
-- name : Synchronize encoding properties directories on workers with the files in roles/worker/files/encoding/ via rsync
+- name: Clean the encoding directory
+  file: >
+    shell: rm -rf /opt/matterhorn/etc/encoding/*
+    tags:
+         - encod_cp
 
-  local_action: >
-              command
-              rsync
-              -e 'ssh -o stricthostkeychecking=no -o userknownhostsfile=/dev/null -o batchmode=yes -o passwordauthentication=no'
-              --delete 
-              -az
-              roles/matterhorn-worker/files/encoding/ 
-              $inventory_hostname:/etc/matterhorn/encoding
-
-  sudo: False
+- name: Copy encoding properties files (iteration by regex wildcard) roles/worker/files/encoding/*.properties to workers in /etc/matterhorn/encoding
+  copy: >
+      src=$item
+      dest=/opt/matterhorn/etc/encoding/
+  with_fileglob:
+      - roles/matterhorn-worker/files/encoding/*.properties
 
   tags:
        - encod_cp

@@ -59,5 +59,3 @@
   tags: node_properties
   notify:
         - restart matterhorn
-
-
