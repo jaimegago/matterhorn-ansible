@@ -2,15 +2,19 @@
 - name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
   template: >
           src=config_properties.j2
-          dest=/etc/matterhorn/config.properties
-
+          dest=/opt/matterhorn/etc/matterhorn/config.properties
+  notify:
+        - restart matterhorn
+  tags: config_properties
 
 
 - name: "Render /etc/matterhorn/matterhorn.conf according to common role vars"
   template: >
              src=matterhorn_conf.j2
-             dest=/etc/matterhorn/matterhorn.conf
-
+             dest=/opt/matterhorn/etc/matterhorn/matterhorn.conf
+  notify:
+        - restart matterhorn
+  tags: matterhorn_conf
 
 - name: "Make sure Matterhorn system user exist"
   user: >
@@ -18,6 +22,19 @@
         state=present
         home=${MATTERHORN_HOME}
         system=yes
+  tags: mh_user
+  notify:
+        - restart matterhorn
+  
+
+- name: "Make sure Matterhorn system group exist"
+  group: >
+        name=${MATTERHORN_GROUP}
+        state=present
+        system=yes
+  tags: mh_group
+  notify:
+        - restart matterhorn
 
 - name: "Make sure MH system user owns the directories (recursive) specified in the JVM options"
   file: >
@@ -30,9 +47,17 @@
         - ${MATTERHORN_CACHE_DIR}
         - ${MATTERHORN_TEMP_DIR}
         - ${MATTERHORN_LOG_DIR}
+  tags: jvm_opt_dirs_owner
+  notify:
+        - restart matterhorn
 
 
 - name: "Copy the required $NODE_TYPE.properties in /etc/matterhorn/profiles/"
   copy: >
              src=roles/matterhorn-${MATTERHORN_NODE_TYPE}/files/${MATTERHORN_NODE_TYPE}.properties
-             dest=/etc/matterhorn/profiles/
+             dest=/opt/matterhorn/etc/matterhorn/profiles/
+  tags: node_properties
+  notify:
+        - restart matterhorn
+
+

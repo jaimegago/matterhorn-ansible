@@ -1,22 +1,40 @@
 ---
-- name: Make sure rsync is installed       
-  yum: >
-        name=rsync
-        state=latest
+#- name: Make sure rsync is installed       
+#  yum: >
+#        name=rsync
+#        state=latest
+#  tags:
+#      - workflow_cp
+#
+#- name : Synchronize workflow directory on workers with the files in roles/admin/files/workflows/ via rsync
+#
+#  local_action: >
+#              command
+#              rsync
+#              -e 'ssh -o stricthostkeychecking=no -o userknownhostsfile=/dev/null -o batchmode=yes -o passwordauthentication=no'
+#              --delete 
+#              -az
+#              roles/matterhorn-admin/files/workflows/ 
+#              $inventory_hostname:/etc/matterhorn/workflows
+#  sudo: False
+#
+#  tags:
+#       - workflow_cp
+#
+#
+#
+# Using the copy module instead of rsync
+- name: clean the workflow directory
+  shell: rm -rf /opt/matterhorn/etc/workflows/*
   tags:
       - workflow_cp
 
-- name : Synchronize workflow directory on workers with the files in roles/admin/files/workflows/ via rsync
-
-  local_action: >
-              command
-              rsync
-              -e 'ssh -o stricthostkeychecking=no -o userknownhostsfile=/dev/null -o batchmode=yes -o passwordauthentication=no'
-              --delete 
-              -az
-              roles/matterhorn-admin/files/workflows/ 
-              $inventory_hostname:/etc/matterhorn/workflows
-  sudo: False
+- name: Copy workflows files (iteration by glob)
+  copy: >
+      src=$item
+      dest=/opt/matterhorn/etc/workflows/
+  with_fileglob:
+      - roles/matterhorn-admin/files/workflows/*.xml
 
   tags:
        - workflow_cp
