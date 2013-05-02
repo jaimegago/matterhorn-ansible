@@ -84,6 +84,16 @@ org_opencastproject_db_ddl_generation: false
 
 org_opencastproject_db_ddl_script_generation: false
 
+org_opencastproject_security_digest: matterhorn_system_account
+
+org_opencastproject_security_pass: CHANGE_ME
+
+org_opencastproject_security_admin_user: admin
+
+org_opencastproject_security_admin_pass: opencast
+
+
+
 ###DATABASE Setting
 org.opencastproject.db.jdbc.driver: 
 
