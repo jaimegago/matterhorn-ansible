@@ -31,9 +31,9 @@ MATTERHORN_GROUP: mh
 
 MATTERHORN_HOME: /opt/matterhorn
 
-MATTERHORN_CONF_DIR: /etc/matterhorn
+MATTERHORN_CONF_DIR: /opt/matterhorn/etc
 
-FELIX_FILEINSTALL_DIR: /etc/matterhorn/load
+FELIX_FILEINSTALL_DIR: /opt/matterhorn/etc/load
 
 MATTERHORN_TEMP_DIR: /var/tmp/matterhorn
 
