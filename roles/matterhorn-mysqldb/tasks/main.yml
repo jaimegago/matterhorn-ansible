@@ -14,5 +14,10 @@
           state=started
 
 - name: Allowing remote access to mh user from any host
-  command: mysql -u root -p${MYSQL_ROOT_PWD} -e "GRANT ALL PRIVILEGES ON *.* TO  ${MYSQL_USER}@'%'  IDENTIFIED  BY ${MYSQL_PWD}i;FLUSH PRIVILEGES"
-  tags: mysql_remote_access
+  command: >
+         mysql 
+         -u root
+         -p${MYSQL_ROOT_PWD}
+         -e "GRANT ALL PRIVILEGES ON *.* TO  ${MYSQL_USER}@'%'  IDENTIFIED  BY ${MYSQL_PWD};FLUSH PRIVILEGES"
+  tags: 
+      - mysql_remote_access
