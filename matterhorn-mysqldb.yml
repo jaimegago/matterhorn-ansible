@@ -1,0 +1,6 @@
+---
+- hosts: matterhorn-mysqldb 
+  user: vagrant
+  sudo: yes
+  roles:
+       - matterhorn-mysqldb

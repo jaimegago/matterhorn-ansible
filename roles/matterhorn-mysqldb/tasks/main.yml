@@ -1,9 +1,11 @@
 ---
-#testing mysql
 - name: installing mysql
   yum: >
        state=latest
-       name=mysql-server
+       name=$item
+  with_items:
+             - mysql
+             - mysql-server
 
 - name: starting if stopped
   service: >
