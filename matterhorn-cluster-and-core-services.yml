@@ -1,4 +1,7 @@
 ---
 - include: matterhorn-worker.yml
 - include: matterhorn-admin.yml
+## WATCHOUT FOR THE DB PLAYBOOK COULD POTENTIALLY RESET THE DATABASE
+## IF IN DOUBT COMMENT OUT!!
+#- include: matterhorn-mysqldb.yml
 
