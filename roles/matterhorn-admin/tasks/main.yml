@@ -38,3 +38,11 @@
 
   tags:
        - workflow_cp
+
+- name: Make sure MH user is still owner of the workflows
+  file: >
+        state=file
+        owner=${MATTERHORN_USER}
+        path=$item
+  with_fileglob:
+                - /opt/matterhorn/etc/workflows/*.xml
