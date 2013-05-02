@@ -2,7 +2,7 @@
 - name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
   template: >
           src=config_properties.j2
-          dest=/opt/matterhorn/etc/matterhorn/config.properties
+          dest=/opt/matterhorn/etc/config.properties
   notify:
         - restart matterhorn
   tags: config_properties
@@ -11,7 +11,7 @@
 - name: "Render /etc/matterhorn/matterhorn.conf according to common role vars"
   template: >
              src=matterhorn_conf.j2
-             dest=/opt/matterhorn/etc/matterhorn/matterhorn.conf
+             dest=/opt/matterhorn/etc/matterhorn.conf
   notify:
         - restart matterhorn
   tags: matterhorn_conf
@@ -55,7 +55,7 @@
 - name: "Copy the required $NODE_TYPE.properties in /etc/matterhorn/profiles/"
   copy: >
              src=roles/matterhorn-${MATTERHORN_NODE_TYPE}/files/${MATTERHORN_NODE_TYPE}.properties
-             dest=/opt/matterhorn/etc/matterhorn/profiles/
+             dest=/opt/matterhorn/etc/profiles/
   tags: node_properties
   notify:
         - restart matterhorn

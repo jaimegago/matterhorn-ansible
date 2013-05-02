@@ -22,17 +22,16 @@
 #  tags:
 #       - encod_cp
 - name: Clean the encoding directory
-  file: >
-    shell: rm -rf /opt/matterhorn/etc/encoding/*
-    tags:
-         - encod_cp
+  shell: rm -rf /opt/matterhorn/etc/encoding/*
+  tags:
+      - encod_cp
 
 - name: Copy encoding properties files (iteration by regex wildcard) roles/worker/files/encoding/*.properties to workers in /etc/matterhorn/encoding
   copy: >
       src=$item
       dest=/opt/matterhorn/etc/encoding/
   with_fileglob:
-      - roles/matterhorn-worker/files/encoding/*.properties
+      - encoding/*.properties
 
   tags:
        - encod_cp
