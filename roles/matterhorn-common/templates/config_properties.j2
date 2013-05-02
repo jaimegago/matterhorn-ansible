@@ -70,7 +70,7 @@ org.opencastproject.security.digest.nonce.variable.time= {{ org_opencastproject_
 # Optional demo account with administrative rights. 
 org.opencastproject.security.admin.user={{ org_opencastproject_security_admin_user }} 
 org.opencastproject.security.admin.pass={{ org_opencastproject_security_admin_pass }} 
-org.opencastproject.security.admin.roles=ROLE_ADMIN,ROLE_USER,ROLE_OAUTH_USER
+org.opencastproject.security.admin.roles={{ org_opencastproject_security_admin_roles }}
 
 # Optional demo accounts with series memberships, but not administrative rights.  If set to 'true', 1000 users will be
 # loaded into the sample user directory.  Usernames are user0, ..., user999.  Passwords are pass0, ..., pass999.
@@ -98,23 +98,23 @@ org.opencastproject.download.url=http://{{ DOWNLOAD_SERVER }}
 # Relational Database configuration.  By default, Matterhorn uses an embedded H2 database.  A standalone database server
 # is recommended for production systems.  If you run the ddl script for your db vendor (see docs/scripts/ddl/) manually,
 # (this is recommended) set 'ddl-generation' to 'false'.
-org.opencastproject.db.ddl.generation=false
+org.opencastproject.db.ddl.generation= {{ org_opencastproject_db_ddl_generation }}
 
 # Enable ddl script generation.  This is used by developers to update the ddl scripts, and should not be enabled in production.
-org.opencastproject.db.ddl.script.generation=false
+org.opencastproject.db.ddl.script.generation={{ org_opencastproject_db_ddl_script_generation}}
 
 # dbVendor can be any of the values listed at under the "eclipselink.target-database" section of
 # http://wiki.eclipse.org/Using_EclipseLink_JPA_Extensions_%28ELUG%29
-org.opencastproject.db.vendor=MySQL
+org.opencastproject.db.vendor={{ org_opencastproject_db_vendor }}
 
 # Matterhorn comes with the jdbc drivers for MySQL (com.mysql.jdbc.Driver) and PostgreSQL (org.postgresql.Driver). To
 # add other jdbcDrivers to the Matterhorn runtime, rebuild the matterhorn-db module with your desired drivers.
-org.opencastproject.db.jdbc.driver=com.mysql.jdbc.Driver
+org.opencastproject.db.jdbc.driver={{ org_opencastproject_db_jdbc_driver }} 
 
 # The jdbc connection url, username, and password
-org.opencastproject.db.jdbc.url=jdbc:mysql://CHANGEME/matterhorn
-org.opencastproject.db.jdbc.user=CHANGEME
-org.opencastproject.db.jdbc.pass=CHANGEME
+org.opencastproject.db.jdbc.url={{ org_opencastproject_db_jdbc_url }}
+org.opencastproject.db.jdbc.user={{ org_opencastproject_db_jdbc_user }}
+org.opencastproject.db.jdbc.pass={{ org_opencastproject_db_jdbc_pass }}
 
 # Directory to store the search, series and scheduler solr indices.  This should be a persistent and stable directory (default:
 # ${org.opencastproject.storage.dir}/searchindex)

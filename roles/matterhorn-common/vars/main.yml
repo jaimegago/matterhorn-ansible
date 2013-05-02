@@ -17,6 +17,11 @@ MH_ENGAGE_NODE_URL: http://my.engage-node.url
 STREAM_SERVER: myred5.serv.er
 DOWNLOAD_SERVER: myhttpd.serv.er
 
+## MYSQL CONVENIANCE VARS
+MYSQL_SERVER: my.sql.srv
+MYSQL_USER: root
+MYSQL_PWD: 
+
 ### /etc/matterhorn/matterhorn_conf vars refer to associate template file in 
 #roles/common/templates/matterhorn_conf_j2 for comments about each value
 PROFILING: OFF
@@ -80,20 +85,26 @@ org_opencastproject_security_digest_nonce_variable_time: 300
 
 org_opencastproject_security_demo_loadusers: false
 
+# SYSTEM REST USER AND ADMIN LOGIN
+org_opencastproject_security_digest: matterhorn_system_account
+org_opencastproject_security_pass: CHANGE_ME
+
+org_opencastproject_security_admin_user: admin
+org_opencastproject_security_admin_pass: opencast
+org_opencastproject_security_admin_roles: ROLE_ADMIN,ROLE_USER,ROLE_OAUTH_USER
+
+
+###DATABASE Setting
+org_opencastproject_db_vendor: MySQL
+
+org_opencastproject_db_jdbc_driver: com.mysql.jdbc.Driver
+
+org_opencastproject_db_jdbc_url: jdbc:mysql://${MYSQL_SERVER}/matterhorn
+
 org_opencastproject_db_ddl_generation: false
 
 org_opencastproject_db_ddl_script_generation: false
 
-org_opencastproject_security_digest: matterhorn_system_account
+org_opencastproject_db_jdbc_user: ${MYSQL_USER}
 
-org_opencastproject_security_pass: CHANGE_ME
-
-org_opencastproject_security_admin_user: admin
-
-org_opencastproject_security_admin_pass: opencast
-
-
-
-###DATABASE Setting
-org.opencastproject.db.jdbc.driver: 
-
+org_opencastproject_db_jdbc_pass: ${MYSQL_PWD}
