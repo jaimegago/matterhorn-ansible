@@ -69,13 +69,13 @@ org_osgi_service_http_secure_enabled: 'false'
 
 org_osgi_service_http_port_secure: '8443'
 
-org_opencastproject_server_url: http://${ansible_fqdn}
+org_opencastproject_server_url: http://${ansible_hostname}.${ansible_domain}
 
 org_opencastproject_serviceregistry_url: '${org.opencastproject.server.url}/services'
 
 org_opencastproject_jobs_url: '${org.opencastproject.server.url}'
 
-org_opencastproject_storage_dir: /var/matterhorn/local/${ansible_fqdn}
+org_opencastproject_storage_dir: /var/matterhorn/local/${ansible_hostname}
 
 org_opencastproject_security_digest_nonce_retries: 12
 

@@ -1,5 +1,5 @@
 ---
-- name: installing mysql
+- name: making sure latest mysql-server is installed
   yum: >
        state=latest
        name=$item
@@ -12,3 +12,7 @@
           name=mysqld
           state=enabled
           state=started
+
+- name: Allowing remote access to mh user from any host
+  command: mysql -u root -p${MYSQL_ROOT_PWD} -e "GRANT ALL PRIVILEGES ON *.* TO  ${MYSQL_USER}@'%'  IDENTIFIED  BY ${MYSQL_PWD}i;FLUSH PRIVILEGES"
+  tags: mysql_remote_access
