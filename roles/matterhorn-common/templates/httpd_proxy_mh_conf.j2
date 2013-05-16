@@ -1,0 +1,19 @@
+ServerName ${ansible_hostname}.${ansible_domain}
+ErrorLog /var/log/httpd/${ansible_hostname}_error_log
+CustomLog /var/log/httpd/${ansible_hostname}_access_log combined
+CustomLog /var/log/httpd/access_log combined
+
+ProxyRequests Off
+ProxyPreserveHost On
+
+# Timeout of 1h to support large ingests
+ProxyTimeout 3600
+
+ProxyPass / http://127.0.0.1:8080/
+ProxyPassReverse / http://127.0.0.1:8080/
+
+<Location />
+Options FollowSymLinks MultiViews ExecCGI
+Order allow,deny
+Allow from all
+</Location>

@@ -1,4 +1,24 @@
 ---
+- name: "Make sure latest Matterhorn is installed (requires entwine repo installed)"
+  yum: >
+     name=entwine-matterhorn
+     state=latest
+  notify:
+        - restart matterhorn
+  tags: matterhorn_rpm
+
+- name: "Make sure Apache httpd is installed (used for proxying MH)"
+  yum: >
+     name=httpd
+     state=latest
+  tags: mh_httpd_proxy
+
+- name: "Configure httpd for MH proxying via template"
+  template: >
+          src=httpd_proxy_mh_conf.j2
+          dest=/etc/httpd/conf.d/matterhorn.conf
+  tags: mh_httpd_proxy
+
 - name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
   template: >
           src=config_properties.j2
