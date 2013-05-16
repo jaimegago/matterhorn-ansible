@@ -11,6 +11,8 @@
   yum: >
      name=httpd
      state=latest
+  notify:
+        - restart httpd
   tags: mh_httpd_proxy
 
 - name: "Configure httpd for MH proxying via template"

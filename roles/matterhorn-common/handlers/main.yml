@@ -3,3 +3,8 @@
   service: >
          name=matterhorn
          state=restarted
+
+- name: restart httpd
+  service: >
+         name=httpd
+         state=restarted
