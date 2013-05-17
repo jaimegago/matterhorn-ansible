@@ -7,22 +7,22 @@
         - restart httpd
   tags: httpd_dist
 
-- name: "Add httpd to startup levels so it's started after reboots"
-  command: >
-         chkconfig
-         --level 345
-         httpd
-         on
+- name: "Make sure httpd is started after reboots"
+  service: >
+         name=httpd
+         enabled=yes
+         state=started
+
   notify:
         - restart httpd
   tags: httpd_dist
 
 - name: "Add symlink in document root so mh files can be downloaded via http"
-  command: >
-         ln 
-         -s 
-         /var/www/html 
-         /vagrant/downloads
+  file: >
+         src=/vagrant/downloads
+         dest=/var/www/html/downloads 
+         state=link
+         
   notify:
         - restart httpd
   tags: httpd_dist
