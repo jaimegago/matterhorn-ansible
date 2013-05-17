@@ -1,0 +1,28 @@
+---
+- name: "Make sure latest Apache httpd is installed"
+  yum: >
+     name=httpd
+     state=latest
+  notify:
+        - restart httpd
+  tags: httpd_dist
+
+- name: "Add httpd to startup levels so it's started after reboots"
+  command: >
+         chkconfig
+         --level 345
+         httpd
+         on
+  notify:
+        - restart httpd
+  tags: httpd_dist
+
+- name: "Add symlink in document root so mh files can be downloaded via http"
+  command: >
+         ln 
+         -s 
+         /var/www/html 
+         /vagrant/downloads
+  notify:
+        - restart httpd
+  tags: httpd_dist

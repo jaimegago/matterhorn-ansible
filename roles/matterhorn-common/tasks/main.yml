@@ -15,10 +15,23 @@
         - restart httpd
   tags: mh_httpd_proxy
 
+- name: "Add httpd to startup levels so it's started after reboots"
+  command: >
+         chkconfig
+         --level 345
+         httpd
+         on
+  notify:
+        - restart httpd
+  tags: mh_httpd_proxy
+
+
 - name: "Configure httpd for MH proxying via template"
   template: >
           src=httpd_proxy_mh_conf.j2
           dest=/etc/httpd/conf.d/matterhorn.conf
+  notify:
+        - restart httpd
   tags: mh_httpd_proxy
 
 - name: "Remplace /etc/matterhorn/config.properties keys values via ansible template"
