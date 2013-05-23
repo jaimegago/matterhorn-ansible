@@ -4,4 +4,4 @@
   sudo: yes
   roles:
        - matterhorn-dist-http
-       #- matterhorn-dist-red5
+       - matterhorn-dist-red5
