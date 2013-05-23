@@ -1,5 +1,11 @@
 ---
-- name: "Make sure latest Matterhorn is installed (requires entwine repo installed)"
+- name: "Install the right repository"
+  template: >
+          src=entwine_repo.j2
+          dest=/etc/yum.repos.d/entwine-mh.repo
+  tags: entwine_repo
+
+- name: "Make sure latest Matterhorn is installed"
   yum: >
      name=entwine-matterhorn
      state=latest

@@ -87,10 +87,10 @@ org.opencastproject.security.demo.loadusers = {{ org_opencastproject_security_de
 org.opencastproject.streaming.url=rtmp://{{ STREAM_SERVER }}/matterhorn-engage
 
 # The directory where the matterhorn streaming app for Red5 stores the streams
-org.opencastproject.streaming.directory=/var/matterhorn/distribution/streams
+org.opencastproject.streaming.directory={{ STREAM_DIR }}
 
 # The directory to store media, metadata, and attachments for download from the engage tool
-org.opencastproject.download.directory=/var/matterhorn/distribution/downloads
+org.opencastproject.download.directory={{ DL_DIR }}
 
 # The base URL for media downloads. Usually the distribution node.
 org.opencastproject.download.url=http://{{ DOWNLOAD_SERVER }}
@@ -129,7 +129,7 @@ org.opencastproject.db.jdbc.pass={{ org_opencastproject_db_jdbc_pass }}
 #org.opencastproject.search.solr.url=http://localhost:8983/solr/
 
 # The path to the archive repository
-org.opencastproject.episode.rootdir=/var/matterhorn/archive
+org.opencastproject.episode.rootdir={{ ARCH_DIR }}
 
 # Directory to store the archive index of the episode service.  This should be a persistent and stable directory (default:
 # ${org.opencastproject.storage.dir}/archive)
@@ -142,7 +142,7 @@ org.opencastproject.episode.rootdir=/var/matterhorn/archive
 #org.opencastproject.episode.solr.url=http://localhost:8983/solr/
 
 # The path to the repository of files used during media processing.
-org.opencastproject.file.repo.path=/var/matterhorn/work/shared/files
+org.opencastproject.file.repo.path={{ WFR_DIR }}
 
 # The base URL of the file server.  When using a shared filesystem between servers, set all servers to use the same URL.
 # If this is set to any value other than ${org.opencastproject.admin.ui.url}, the admin and file servers must use a
@@ -150,7 +150,7 @@ org.opencastproject.file.repo.path=/var/matterhorn/work/shared/files
 org.opencastproject.file.repo.url=${org.opencastproject.admin.ui.url}
 
 # The path to the working files (recommend using fast, transient storage)
-org.opencastproject.workspace.rootdir=/var/matterhorn/work/shared/workspace
+org.opencastproject.workspace.rootdir={{ WORK_DIR }}
 
 # The ID of the default workflow definition to run when media are ingested
 org.opencastproject.workflow.default.definition=full

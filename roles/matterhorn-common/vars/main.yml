@@ -3,25 +3,6 @@
 ###VARIABLES COMMON TO ALL MATTERHORN HOSTS###
 ##############################################
 #
-#Engage and Admin node URLs to be used accross the cluster
-#Also http downloads and streaming servers
-#This can be computed from the host file/and or using facts
-#It's easy enough to hardcoded them here though
-#and one could scale this with adding numbers to the vars names
-#when looking to achieve some level of redundancy/load balancing
-###
-
-MH_ADMIN_NODE_URL: http://my.admin-node.url
-MH_ENGAGE_NODE_URL: http://my.engage-node.url
-
-STREAM_SERVER: myred5.serv.er
-DOWNLOAD_SERVER: myhttpd.serv.er
-
-## MYSQL CONVENIANCE VARS
-MYSQL_SERVER: my.sql.srv
-MYSQL_USER: root
-MYSQL_PWD: 
-
 ### /etc/matterhorn/matterhorn_conf vars refer to associate template file in 
 #roles/common/templates/matterhorn_conf_j2 for comments about each value
 PROFILING: OFF
