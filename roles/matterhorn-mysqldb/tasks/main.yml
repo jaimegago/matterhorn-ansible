@@ -16,8 +16,8 @@
 - name: Allowing remote access to mh user from any host
   command: >
          mysql 
+         -proot
          -u root
-         -p${MYSQL_ROOT_PWD}
-         -e "GRANT ALL PRIVILEGES ON *.* TO  ${MYSQL_USER}@'%'  IDENTIFIED  BY ${MYSQL_PWD};FLUSH PRIVILEGES"
+         -e "GRANT ALL PRIVILEGES ON *.* TO  ${MYSQL_USER}@'%'  IDENTIFIED  BY \'${MYSQL_PWD}\';FLUSH PRIVILEGES"
   tags: 
       - mysql_remote_access
