@@ -1,0 +1,21 @@
+---
+
+
+
+- name: "Install Entwine repo that hosts red5 rpm"
+  template: >
+          src=entwine_repo.j2
+          dest=/etc/yum.repos.d/entwine-mh.repo
+  tags: entwine_repo
+
+- name: "Install latest Java 6 (OpenJDK) - Red5 Requirement (ADD JAVA DEP TO RED5 RPM?)"
+  yum: >
+     name=java-1.6.0-openjdk
+     state=latest
+
+- name: "Install Red5"
+  yum: >
+     name=red5
+     state=latest
+  notify:
+        - restart red5
