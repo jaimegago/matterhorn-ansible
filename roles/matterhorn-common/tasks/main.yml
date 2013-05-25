@@ -61,8 +61,6 @@
   user: >
         name=${MATTERHORN_USER}
         state=present
-        home=${MATTERHORN_HOME}
-        system=yes
   tags: mh_user
   notify:
         - restart matterhorn
