@@ -23,7 +23,7 @@
         <li class="ui-helper-clearfix">
           <span id="trimholdconfig">
             <input id="trimHold" name="trimHold" type="checkbox" class="configField holdCheckbox" value="true" />
-            <span id="i18n_hold_for_trim">&nbsp;Review / Trim before encoding (with option to edit info)</span>
+            <span id="i18n_hold_for_trim">&nbsp;Videoeditor (with option to edit info)</span>
           </span>
         </li>
         <li class="ui-helper-clearfix">
@@ -54,10 +54,8 @@
           <span id="dist">
             <input id="distribution" name="distribution" type="checkbox" checked="checked" disabled="disabled" class="configField" value="Matterhorn Media Module" />
             <span id="i18n_dist_mmm">&nbsp;Matterhorn Media Module</span>
-            <input id="youtube" name="youtube" type="checkbox" disabled="disabled" class="configField" value="Youtube" />
-            <span id="i18n_dist_mmm">&nbsp;Youtube</span>
-            <input id="itunesu" name="itunesu" type="checkbox" disabled="disabled" class="configField" value="iTunesU" />
-            <span id="i18n_dist_mmm">&nbsp;iTunesU</span>
+            <input id="oaipmh" name="oaipmh" type="checkbox" class="configField" value="OAI-PMH" />
+            <span id="i18n_dist_mmm">&nbsp;OAI-PMH</span>
           </span>
         </li>
       </ul>
@@ -105,6 +103,12 @@
           {key: 'org.opencastproject.workflow.config.videoPreview'},
           {getValue: function(){ return this.fields.videoPreview.is(":checked");}
           });
+
+        components['org.opencastproject.workflow.config.oaipmh'] = new ocAdmin.Component(
+          ['oaipmh'],
+          {key: 'org.opencastproject.workflow.config.oaipmh'},
+          {getValue: function(){ return this.fields.oaipmh.is(":checked");}
+          });
           
         ocScheduler.dublinCore.components['license'] = new ocAdmin.Component(
           ['license'],
@@ -118,6 +122,7 @@
         components['org.opencastproject.workflow.config.trimHold'].setValue(values['org.opencastproject.workflow.config.trimHold']);
         components['org.opencastproject.workflow.config.videoPreview'].setValue(values['org.opencastproject.workflow.config.videoPreview']);
         components['org.opencastproject.workflow.config.archiveOp'].setValue(values['org.opencastproject.workflow.config.archiveOp']);
+        components['org.opencastproject.workflow.config.oaipmh'].setValue(values['org.opencastproject.workflow.config.oaipmh']);
         components['license'].setValue(values['license']);
       }
     </script>
@@ -141,21 +146,21 @@
       id="tag"
       description="Tagging source material for archival">
       <configurations>
-        <configuration key="source-flavors">*/source,dublincore/*,security/*</configuration>
+        <configuration key="source-flavors">*/source,dublincore/*,security/*,ethz/metadata</configuration>
         <configuration key="target-tags">+archive</configuration>
       </configurations>
     </operation>
 
-    <!-- tag the dublin core catalogs so they will be distributed and added to search -->
-    
+    <!-- tag the incoming metadata catalogs for publishing -->
+
     <operation
       id="tag"
-      description="Tagging dublin core catalogs for publishing">
+      description="Tagging source metadata for publishing">
       <configurations>
-        <configuration key="source-flavors">dublincore/*</configuration>
+        <configuration key="source-flavors">dublincore/*,ethz/metadata</configuration>
         <configuration key="target-tags">+engage</configuration>
       </configurations>
-    </operation> 
+    </operation>
 
     <!-- inspect the media -->
     
@@ -176,7 +181,7 @@
       <configurations>
         <configuration key="source-flavor">presenter/source</configuration>
         <configuration key="target-flavor">presenter/work</configuration>
-        <configuration key="rewrite">false</configuration>
+        <configuration key="rewrite">true</configuration>
         <configuration key="promiscuous-audio-muxing">true</configuration>
       </configurations>
     </operation>
@@ -189,38 +194,78 @@
       <configurations>
         <configuration key="source-flavor">presentation/source</configuration>
         <configuration key="target-flavor">presentation/work</configuration>
-        <configuration key="rewrite">false</configuration>
+        <configuration key="rewrite">true</configuration>
         <configuration key="promiscuous-audio-muxing">true</configuration>
       </configurations>
     </operation>
-
-    <!-- encode to hold preview player formats -->
-
+    
+    <!-- encode trim preview as webm video -->
     <operation
       id="compose"
-      if="${videoPreview}"
-      fail-on-error="true"
-      exception-handler-workflow="error"
-      description="Encoding presenter (camera) video for preview">
-      <configurations>
-        <configuration key="source-flavor">*/work</configuration>
-        <configuration key="target-flavor">*/preview</configuration>
-        <configuration key="encoding-profile">flash-preview.http</configuration>
-      </configurations>
-    </operation>
-
-    <!-- hold to trim media--> 
-    <operation
-      id="trim"
       if="${trimHold}"
       fail-on-error="true"
       exception-handler-workflow="error"
-      description="Waiting for user to review / trim recording">
+      description="Encoding presenter (camera) video for videoeditor preview">
       <configurations>
         <configuration key="source-flavor">*/work</configuration>
+        <configuration key="target-flavor">*/preview</configuration>
+        <configuration key="target-tags">webm</configuration>
+        <configuration key="encoding-profile">webm-preview.http</configuration>
+      </configurations>
+    </operation>
+    
+    <!-- extract audio from video in wave format for waveform -->
+    <operation
+      id="compose"
+      if="${trimHold}"
+      fail-on-error="false"
+      description="Extracting audio for waveform generation">
+      <configurations>
+        <configuration key="source-flavor">presenter/work</configuration>
+        <configuration key="target-flavor">audio/waveform</configuration>
+        <configuration key="target-tags">waveform</configuration>
+        <configuration key="encoding-profile">audio-waveform.http</configuration>
+      </configurations>
+    </operation>
+    
+    <!-- generate waveform from wav file -->
+    <operation
+      id="waveform"
+      if="${trimHold}"
+      fail-on-error="false"
+      description="Generating waveform">
+      <configurations>
+        <configuration key="source-flavor">audio/waveform</configuration>
+	<configuration key="target-flavor">image/waveform</configuration>
+      </configurations>
+    </operation>
+    
+    <!-- let SilenceDetection detect some silence -->
+    <operation
+      id="silence"
+      if="${trimHold}"
+      fail-on-error="false"
+      description="Executing SilenceDetection">
+      <configurations>
+        <configuration key="source-flavor">audio/waveform</configuration>
+	<configuration key="target-flavor">smil/smil</configuration>
+      </configurations>
+    </operation>
+
+    <!-- hold to edit media--> 
+    <!-- produce trimmed and muxed videos -->
+
+    <operation
+      id="editor"
+      if="${trimHold}"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Waiting for user to review / video edit recording">
+      <configurations>
+        <configuration key="source-flavor">*/work</configuration>
+	<configuration key="preview-flavor">*/preview</configuration>
+	<configuration key="smil-flavor">smil/smil</configuration>
         <configuration key="target-flavor-subtype">trimmed</configuration>
-        <configuration key="encoding-profile">trim.work</configuration>
-        <!-- configuration key="duration-threshold">1000</configuration -->
       </configurations>
     </operation>
 
@@ -304,6 +349,84 @@
         <configuration key="target-flavor">presentation/delivery</configuration>
         <configuration key="target-tags">engage</configuration>
         <configuration key="encoding-profile">flash-vga.http</configuration>
+      </configurations>
+    </operation>    
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presenter (camera) video to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presenter/trimmed</configuration>
+        <configuration key="target-flavor">presenter/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">feed-presenter-mp4.http</configuration>
+      </configurations>
+    </operation>
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presentation (screen) to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presentation/trimmed</configuration>
+        <configuration key="target-flavor">presentation/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">feed-presenter-mp4.http</configuration>
+      </configurations>
+    </operation>    
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presenter (camera) video to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presenter/trimmed</configuration>
+        <configuration key="target-flavor">presenter/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">theora.http</configuration>
+      </configurations>
+    </operation>
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presentation (screen) to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presentation/trimmed</configuration>
+        <configuration key="target-flavor">presentation/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">theora.http</configuration>
+      </configurations>
+    </operation>    
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presenter (camera) video to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presenter/trimmed</configuration>
+        <configuration key="target-flavor">presenter/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">vp8.http</configuration>
+      </configurations>
+    </operation>
+
+    <operation
+      id="compose"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Encoding presentation (screen) to Flash download">
+      <configurations>
+        <configuration key="source-flavor">presentation/trimmed</configuration>
+        <configuration key="target-flavor">presentation/delivery</configuration>
+        <configuration key="target-tags">engage</configuration>
+        <configuration key="encoding-profile">vp8.http</configuration>
       </configurations>
     </operation>
 
@@ -453,9 +576,41 @@
       exception-handler-workflow="error"
       description="Distribute and publish to engage player">
       <configurations>
-        <configuration key="download-tags">engage,atom,rss</configuration>
-		<configuration key="streaming-tags">engage</configuration>
-		<configuration key="check-availability">true</configuration>
+        <configuration key="download-source-tags">engage,atom,rss</configuration>
+        <configuration key="streaming-source-tags">engage</configuration>
+        <configuration key="check-availability">true</configuration>
+      </configurations>
+    </operation>
+
+    <!-- Publish to OAI-PMH -->
+
+	<operation
+      id="publish-oaipmh"
+      if="${oaipmh}"
+      max-attempts="2"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Distribute and publish to OAI-PMH matterhorn prefix">
+      <configurations>
+        <configuration key="source-tags">engage,atom,rss</configuration>
+        <configuration key="streaming-tags">engage</configuration>
+        <configuration key="check-availability">true</configuration>
+        <configuration key="channel">matterhorn</configuration>
+      </configurations>
+    </operation>
+
+	<operation
+      id="publish-oaipmh"
+      if="${oaipmh}"
+      max-attempts="2"
+      fail-on-error="true"
+      exception-handler-workflow="error"
+      description="Distribute and publish to OAI-PMH oai_dc prefix">
+      <configurations>
+        <configuration key="source-tags">engage,atom,rss</configuration>
+        <configuration key="streaming-tags">engage</configuration>
+        <configuration key="check-availability">true</configuration>
+        <configuration key="channel">oai_dc</configuration>
       </configurations>
     </operation>
 
@@ -478,6 +633,10 @@
       id="cleanup"
       fail-on-error="false"
       description="Cleaning up">
+      <configurations>
+        <configuration key="preserve-flavors"></configuration>
+        <configuration key="delete-external">true</configuration>
+      </configurations>
     </operation>
   </operations>
 
