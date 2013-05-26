@@ -1,21 +1,41 @@
 ---
-
-
-
 - name: "Install Entwine repo that hosts red5 rpm"
   template: >
           src=entwine_repo.j2
           dest=/etc/yum.repos.d/entwine-mh.repo
-  tags: entwine_repo
+  tags: 
+      - entwine_repo
 
 - name: "Install latest Java 6 (OpenJDK) - Red5 Requirement (ADD JAVA DEP TO RED5 RPM?)"
   yum: >
      name=java-1.6.0-openjdk
      state=latest
-
+  tags:
+      - red5
 - name: "Install Red5"
   yum: >
      name=red5
      state=latest
+  tags:
+      - red5
   notify:
         - restart red5
+
+- name: "Copy matterhorn engage streaming war"
+  copy: >
+      src=matterhorn-engage-streaming.war
+      dest=/usr/lib/red5/webapps
+  register: last_result
+  tags:
+      - red5
+  notify:
+       - restart red5
+
+- name: "expand the war on first install"
+  command: jar -xf /usr/lib/red5/webapps/matterhorn-engage-streaming.war
+  when: last_result.changed
+  tags:
+      - red5
+  notify:
+       - restart red5
+

@@ -21,14 +21,10 @@
         - restart httpd
   tags: mh_httpd_proxy
 
-- name: "Add httpd to startup levels so it's started after reboots"
-  command: >
-         chkconfig
-         --level 345
-         httpd
-         on
-  notify:
-        - restart httpd
+- name: "Add httpd to startup levels and start "
+  service: >
+         name=httpd
+         enabled=yes
   tags: mh_httpd_proxy
 
 
@@ -75,7 +71,7 @@
   notify:
         - restart matterhorn
 
-- name: "Make sure MH system user owns the directories (recursive) specified in the JVM options"
+- name: "Make sure MH system user owns the directories (recursive) specified in the JVM options and data dir"
   file: >
         state=directory
         recurse=yes
@@ -86,6 +82,12 @@
         - ${MATTERHORN_CACHE_DIR}
         - ${MATTERHORN_TEMP_DIR}
         - ${MATTERHORN_LOG_DIR}
+        - ${STREAM_DIR}
+        - ${DL_DIR}
+        - ${ARCH_DIR}
+        - ${WFR_DIR}
+        - ${WORK_DIR}
+        - ${org_opencastproject_storage_dir}
   tags: jvm_opt_dirs_owner
   notify:
         - restart matterhorn
