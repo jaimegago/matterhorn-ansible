@@ -1,0 +1,64 @@
+#ETH Vagrant host file
+[ansible-admin]
+10.1.1.100
+
+[admin]
+10.1.1.100
+[workers]
+10.1.1.101
+10.1.1.102
+[presentation]
+10.1.1.103
+
+[matterhorn-mysqldb]
+10.1.1.104
+
+[distribution]
+10.1.1.105
+[matterhorn:children]
+workers
+presentation
+admin
+
+
+[matterhorn:vars]
+#org_opencastproject_server_url=http://${ansible_hostname}.${ansible_domain}
+org_opencastproject_server_url=http://{{ ansible_eth1["ipv4"]["address"] }}
+
+
+MATTERHORN_USER=vagrant
+MATTERHORN_GROUP=vagrant
+
+entwine_repo_url=http://eth-repo-user:AnP4OhhAZHzS@rpm.entwinemedia.com/eth/
+MH_ADMIN_NODE_URL=http://10.1.1.100
+MH_ENGAGE_NODE_URL=http://10.1.1.103
+
+STREAM_SERVER=10.1.1.105
+DOWNLOAD_URL=http://10.1.1.105/downloads
+
+MYSQL_SERVER=10.1.1.104
+MYSQL_USER=root
+MYSQL_PWD=root 
+
+STREAM_DIR=/var/opt/mh-share/distribution/streams
+DL_DIR=/var/opt/mh-share/distribution/downloads
+ARCH_DIR=/var/opt/mh-share/archive
+WFR_DIR=/var/opt/mh-share/work/shared/files
+WORK_DIR=/var/opt/mh-share/work/shared/workspace
+
+[distribution:vars]
+#This is used to set the repo that contains the red5 RPM
+entwine_repo_url=http://eth-repo-user:AnP4OhhAZHzS@rpm.entwinemedia.com/eth/
+
+#Path to distribution directory root
+DIST_DIR_ROOT=/var/opt/mh-share/distribution
+
+#
+
+#This is used to create a symlink for red5
+STREAM_DIR=/var/opt/mh-share/distribution/streams
+
+[matterhorn-mysqldb:vars]
+#this should match the ones set in matterhorn:vars
+MYSQL_USER=root
+MYSQL_PWD=root
