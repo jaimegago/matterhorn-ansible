@@ -3,8 +3,10 @@
   template: >
           src=entwine_repo.j2
           dest=/etc/yum.repos.d/entwine-mh.repo
+          backup=yes
   tags: 
       - entwine_repo
+
 
 - name: "Install latest Java 6 (OpenJDK) - Red5 Requirement (ADD JAVA DEP TO RED5 RPM?)"
   yum: >
@@ -12,6 +14,8 @@
      state=latest
   tags:
       - red5
+
+
 - name: "Install Red5"
   yum: >
      name=red5
@@ -19,7 +23,8 @@
   tags:
       - red5
   notify:
-        - restart red5
+      - restart red5
+
 
 - name: "Copy matterhorn engage streaming war"
   copy: >
@@ -29,7 +34,8 @@
   tags:
       - red5
   notify:
-       - restart red5
+      - restart red5
+
 
 - name: "expand the war on first install"
   command: jar -xf /usr/lib/red5/webapps/matterhorn-engage-streaming.war
@@ -37,5 +43,16 @@
   tags:
       - red5
   notify:
-       - restart red5
+      - restart red5
+
+
+- name: "add symlink in shared space pointing to red5 streams dir"
+  file: >
+      src=/usr/lib/red5/webapps/matterhorn/streams
+      dest=${STREAM_DIR}
+      state=link
+  tags:
+     - red5
+  notify:
+     - restart red5
 

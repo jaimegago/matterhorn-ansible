@@ -3,6 +3,7 @@
   template: >
           src=entwine_repo.j2
           dest=/etc/yum.repos.d/entwine-mh.repo
+          backup=yes
   tags: entwine_repo
 
 - name: "Make sure latest Matterhorn is installed"
@@ -32,6 +33,7 @@
   template: >
           src=httpd_proxy_mh_conf.j2
           dest=/etc/httpd/conf.d/matterhorn.conf
+          backup=yes
   notify:
         - restart httpd
   tags: mh_httpd_proxy
@@ -40,6 +42,7 @@
   template: >
           src=config_properties.j2
           dest=/opt/matterhorn/etc/config.properties
+          backup=yes
   notify:
         - restart matterhorn
   tags: config_properties
@@ -49,6 +52,7 @@
   template: >
              src=matterhorn_conf.j2
              dest=/opt/matterhorn/etc/matterhorn.conf
+             backup=yes
   notify:
         - restart matterhorn
   tags: matterhorn_conf
