@@ -17,9 +17,18 @@
         - restart httpd
   tags: httpd_dist
 
+
+- name: "Create download directory if it doesn't exists"
+  file: >
+      path=${DIST_DIR_ROOT}
+      state=directory
+      mode=777 
+  tags:
+      - red5
+
 - name: "Add symlink in document root so mh files can be downloaded via http"
   file: >
-         src=/vagrant/downloads
+         src=
          dest=/var/www/html/downloads 
          state=link
          

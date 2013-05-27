@@ -37,7 +37,7 @@
       - restart red5
 
 
-- name: "expand the war on first install"
+- name: "Expand the war on first install"
   command: jar -xf /usr/lib/red5/webapps/matterhorn-engage-streaming.war
   when: last_result.changed
   tags:
@@ -45,6 +45,17 @@
   notify:
       - restart red5
 
+- name: "Create distribution directory if it doesn't exists"
+  file: >
+      path=${DIST_DIR_ROOT}
+      state=directory
+      mode=777 
+  tags:
+      - red5
+
+
+  notify:
+      - restart red5
 
 - name: "add symlink in shared space pointing to red5 streams dir"
   file: >
