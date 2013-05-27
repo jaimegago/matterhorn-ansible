@@ -29,7 +29,7 @@ org_opencastproject_server_url=http://{{ ansible_eth1["ipv4"]["address"] }}
 MATTERHORN_USER=vagrant
 MATTERHORN_GROUP=vagrant
 
-entwine_repo_url=http://eth-repo-user:AnP4OhhAZHzS@rpm.entwinemedia.com/eth/
+entwine_repo_url=CHANGE_ME
 MH_ADMIN_NODE_URL=http://10.1.1.100
 MH_ENGAGE_NODE_URL=http://10.1.1.103
 
@@ -48,7 +48,7 @@ WORK_DIR=/var/opt/mh-share/work/shared/workspace
 
 [distribution:vars]
 #This is used to set the repo that contains the red5 RPM
-entwine_repo_url=http://eth-repo-user:AnP4OhhAZHzS@rpm.entwinemedia.com/eth/
+entwine_repo_url=CHANGE_ME
 
 #Path to distribution directory root
 DIST_DIR_ROOT=/var/opt/mh-share/distribution
